@@ -1,0 +1,11 @@
+{
+	"extends": "@sofie-automation/code-standard-preset/ts/tsconfig.lib",
+
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"baseUrl": ".",
+		"paths": {
+			"*": ["node_modules/*"]
+		}
+	}
+}

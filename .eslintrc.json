@@ -1,0 +1,13 @@
+{
+	"extends": "./node_modules/@sofie-automation/code-standard-preset/eslint/main",
+
+	"overrides": [
+		{
+			"files": ["*.ts"],
+			"parserOptions": {
+				"tsconfigRootDir": ".",
+				"project": ["./tsconfig.server.json", "./src/public/tsconfig.json", "./test/tsconfig.json"]
+			}
+		}
+	]
+}

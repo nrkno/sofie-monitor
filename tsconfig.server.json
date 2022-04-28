@@ -1,0 +1,12 @@
+{
+	"extends": "./tsconfig.base.json",
+	"compilerOptions": {
+		// currently targeting Node 14
+		"module": "commonjs",
+		"target": "es2020",
+		"types": ["node"],
+		"outDir": "dist"
+	},
+	"include": ["./src/**/*"],
+	"exclude": ["./src/public", "**/__mocks__/**"]
+}

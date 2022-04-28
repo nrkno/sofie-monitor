@@ -1,0 +1,30 @@
+.navbar.navbar-default.navbar-fixed-top
+  .container
+    .navbar-header
+      a.navbar-brand(href='#', onclick="window.location.reload(true);")
+        i.fa.fa-television
+        | Sofie Monitor
+    .collapse.navbar-collapse
+      ul.nav.navbar-nav
+        li(class=(title == 'Server Status Messages') ? 'active' : undefined)
+          a(href='/statusMessage?servers=' + (req.query.servers || '')) Status Message
+        li(class=(title == 'Server Versions') ? 'active' : undefined)
+          a(href='/serverVersions?servers=' + (req.query.servers || '')) Versions
+        li(class=(title == 'Service Messages') ? 'active' : undefined)
+          a(href='/globalMessageForm?servers=' + (req.query.servers || '')) Service Messages
+        li(class=(title == 'Sofie Instances') ? 'active' : undefined)
+          a(href='/sofieInstances?servers=' + (req.query.servers || '')) Instances
+      ul.nav.navbar-nav.navbar-right
+        li.dropdown(class=(title == 'Servers') ? 'active' : undefined)
+          a.dropdown-toggle(href='#', data-toggle='dropdown')
+            i.fa.fa-server
+            span Servers
+            i.caret
+          ul.dropdown-menu
+            each server in servers
+              li
+                a(href='http://' + server.host, target='_blank') #{server.name || server.host} #{server.name ? '(' + server.host + ')' : ''}
+        //- Uncomment the below to see a link to github
+        //- li
+        //-   a(style="padding-top: 0; padding-bottom: 0;")
+        //-     iframe(src="https://ghbtns.com/github-btn.html?user=nrkno&repo=sofie-monitor&type=star&count=true&size=large", frameborder="0", scrolling="0", width="160px", height="30px", style="margin-top: 10px;")

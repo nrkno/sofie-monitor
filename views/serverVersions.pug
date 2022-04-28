@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  h1 Server versions
+  if error
+    .error There was an error
+    p= error
+  else
+    table#versions.table
+      tr
+        th
+        each column in columns
+          th #{column}
+      each server in servers
+        tr
+          td= server.host || 'No host found'
+          if server.error
+            td(colspan=99)= server.error.error
+          else
+            each column in columns
+              td
+                //- if (column.match(/(_process)|(^core)/) )
+                //-   b #{server.versions[column]}
+                //- else
+                //-   p #{server.versions[column]}
+                if(server.versions[column])
+                  if (server.versions[column].bold)
+                    b #{server.versions[column].text}
+                  else
+                    p #{server.versions[column].text}
+                else
+                  p

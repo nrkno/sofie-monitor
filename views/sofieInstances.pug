@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  h1 Sofie Instances
+
+  div(class="panel panel-default")
+    div(class="panel-heading")
+      h2(class="panel-title") Registered instances
+    table(class="table table-striped")
+      thead
+        tr
+          th Name
+          th Location
+          th Actions
+      tbody(class="instance-list")
+        each instance in instances
+          tr(data-instance-url=instance.url.href)
+            th #{instance.name}
+            td #{instance.url.href}
+            td
+              div(class="btn-toolbar")
+                div(class="btn-group")
+                  button(type="button" data-api-action="delete" data-location=`${endpoints.delete.path}/${instance._id}` data-method=endpoints.delete.method class="btn btn-xs btn-danger") Delete
+                div(class="btn-group")
+                  button(type="button" data-api-action="refresh" data-location=`${endpoints.update.path}/${instance._id}` data-method=endpoints.update.method class="btn btn-xs btn-info") Refresh
+  
+  form(name=formName action=endpoints.create.path method=endpoints.create.method class="form-horizontal" enctype="application/x-www-form-urlencoded" )
+    div(class="panel panel-default")
+      div(class="panel-heading")
+        h2(class="panel-title") Add instance
+      div(class="panel-body")
+        p Add a new instance by submitting the instance's URL. The instance's name and other properties will be automatically retrieved.
+        div(class="form-group")
+          label(for="add-sofieinstance-form-url" class="col-sm-1 control-label") URL
+          div(class="col-sm-11")
+            input(type="url" id="add-sofieinstance-form-url" name="url" class="form-control" required)
+            p(class="help-block") Must be an actual URL (http://mysofie, not just 'mysofie'). Copy/paste from browser address bar :)
+      div(class="panel-footer")
+        button(type="submit" class="btn btn-primary") Add

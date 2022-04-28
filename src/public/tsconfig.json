@@ -1,0 +1,11 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"rootDir": ".",
+		"module": "esnext",
+		"target": "esnext",
+		"outDir": "../../dist/public",
+		"lib": ["DOM"]
+	},
+	"include": ["js/**/*"]
+}

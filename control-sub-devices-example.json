@@ -1,0 +1,16 @@
+{
+	"rk5": {
+		"host": "http://localhost:3000",
+		"playout": {
+			"name": "playoutCoreParent01",
+			"subDevices": ["viz0"]
+		}
+	},
+	"rk6": {
+		"host": "http://localhost:3000",
+		"playout": {
+			"name": "playoutCoreParent01",
+			"subDevices": ["viz1"]
+		}
+	}
+}

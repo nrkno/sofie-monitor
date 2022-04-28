@@ -1,0 +1,38 @@
+extends layout 
+
+block content
+  h1 Core Control
+
+  if rk5rk6SubDevicesToEnableDisable
+    h2 RK5/RK6 offline/online control
+    p These are hardcoded options for disabling and enabling certain subdevices to facilitate a quick switch between RK5 and RK6 for a Studio 5 broadcast.
+    p Note that this application does not know the current state of the Sofie instances and will blindly send the commands as requested. Make sure you are disabling and enabling for the correct control rooms!
+    p The subdevices affected are:
+    ul 
+      li RK5 
+        em (#{rk5rk6SubDevicesToEnableDisable.rk5.host}/#{rk5rk6SubDevicesToEnableDisable.rk5.playout.name})
+        ul
+          each device in rk5rk6SubDevicesToEnableDisable.rk5.playout.subDevices
+            li 
+              code #{device}
+      li RK6 
+        em (#{rk5rk6SubDevicesToEnableDisable.rk6.host}/#{rk5rk6SubDevicesToEnableDisable.rk6.playout.name})
+        ul
+          each device in rk5rk6SubDevicesToEnableDisable.rk6.playout.subDevices
+            li
+              code #{device}
+
+
+    h3 Choose which control room should be online with Studio 5
+    p This process works in two steps:
+    ol
+      li First the control room that's not supposed to be online will have its subdevices disabled 
+      li Then the control that is supposed to be online will have its subdevices enabled
+
+    div(class="btn-toolbar")
+      button(type="button" class="rk-online-offline-control btn btn-primary" data-disable-payloads=JSON.stringify(rk5rk6SubDevicesToEnableDisable.rk5.disablePayloads) data-enable-payloads=JSON.stringify(rk5rk6SubDevicesToEnableDisable.rk6.enablePayloads))
+        span Enable Studio 5 control from RK6
+      button(class="rk-online-offline-control btn btn-primary" data-disable-payloads=JSON.stringify(rk5rk6SubDevicesToEnableDisable.rk6.disablePayloads) data-enable-payloads=JSON.stringify(rk5rk6SubDevicesToEnableDisable.rk5.enablePayloads))
+        span Enable Studio 5 control from RK5
+  else
+    p This feature is not enabled

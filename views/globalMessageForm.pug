@@ -1,0 +1,134 @@
+extends layout
+
+block content
+  h1 Service messages
+
+  div(class="row")
+    div(class="col-md-6")
+      div(class="panel panel-default")
+        form(action=endpoints.create.path method=endpoints.create.method enctype="application/x-www-form-urlencoded" name="post-service-message")
+          div(class="panel-heading")
+            h2(class="panel-title") Send message
+          div(class="panel-body")
+            div(class="form-group")
+              label Criticality
+              p(class="help-block") Severity of the message, will be reflected in the UI notification center
+              div(class="btn-toolbar criticality-selector")
+                div(class="btn-group criticality-selector-option")
+                  label(class="btn btn-danger active" data-active-class-name="btn-danger")
+                    input(type="radio" class="hidden" name="criticality" value="1" autocomplete="off" checked)
+                    span(data-inactive-class-name="text-danger") Critical
+                div(class="btn-group criticality-selector-option")
+                  label(class="btn btn-default" data-active-class-name="btn-warning")
+                    input(type="radio" class="hidden" name="criticality" value="2" autocomplete="off")
+                    span(class="text-warning" data-inactive-class-name="text-warning") Warning
+                div(class="btn-group criticality-selector-option")
+                  label(class="btn btn-default" data-active-class-name="btn-info")
+                    input(type="radio" class="hidden" name="criticality" value="3" autocomplete="off")
+                    span(class="text-info" data-inactive-class-name="text-info") Notification
+            div(class="form-group")
+              label(for="servicemessage-form-message") Message
+              p(class="help-block") Message content. Try to stay brief :)
+              textarea(class="form-control" id="servicemessage-form-message" name="message" rows="3" required)
+            div(class="form-group")
+              label Instances to send to
+              p(class="help-block") The service message will be sent to all selected instances.
+              div
+                label(class="checkbox-inline")
+                  input(type="checkbox" id="toggle-send-to-all" autocomplete="off" data-skip-validate)
+                  | Send to all
+              div(id="valid-message-targets")
+                p(class="help-block") ..or select one or more individual instances
+                each instance in instances
+                  label(class="checkbox-inline")
+                    input(type="checkbox" class="message-target" name="messageTarget" value=instance.url.href  data-skip-validate)
+                    | #{instance.name}
+                p(class="help-block message-target-error") You must select at least one instance though :P
+          div(class="panel-footer")
+            div(class="hidden progress")
+              div(class="progress-bar progress-bar-striped active" style="width:100%")
+                | Sending
+            button(type="submit" class="btn btn-primary") Send message
+    div(class="col-md-6")
+      div(class="panel panel-default")
+        div(class="panel-heading")
+          h2(class="panel-title") Active messages
+        div(class="panel-body")
+          - const activeMessagesListId = "active-messages-list"
+          p These messages are currently flagged as active and have been queued for distribution to the selected instances.
+          p Click on a message to see details and distribution status.
+          div(class="panel-group" id=activeMessagesListId)
+            each message in activeMessages
+              - const contextName = translateCriticalityToBootstrapContext(message.criticality)
+              - const toggleId = `activeMessage-toggle-${message._id}`
+              - const contentId = `activeMessage-content-${message._id}`
+              div(class="panel panel-default")
+                div(class="panel-heading" role="tab")
+                  h3(class="panel-title text-truncate")
+                    a(role="button" data-toggle="collapse" data-target=`#${contentId}` data-parent=`#${activeMessagesListId}` aria-expanded="false" aria-controls=contentId)
+                      | #{formatDateTime(message.timestamp)}: #{message.message}
+                div(id=contentId class="panel-collapse collapse" aria-labelledby=toggleId)
+                  div(class="panel-body")
+                    dl(class="dl-horizontal")
+                      dt Created:
+                      dd #{formatDateTime(message.timestamp)}
+                      dt Criticality
+                      dd(class=`bg-${contextName}`) #{message.criticality}
+                      dt Message
+                      dd #{message.message}
+                    table(class="table table-condensed")
+                      thead
+                        tr
+                          th Instance
+                          th Distribution status
+                      tbody
+                        each status in message.distributions
+                          tr
+                            td #{status.instance.name}
+                            td #{status.isActive ? 'Published' : 'Pending publication'}
+                  div(class="panel-footer")
+                    div(class="btn-toolbar")
+                      div(class="btn-group")
+                        button(type="button" data-api-action="delete" data-location=`${endpoints.delete.path}/${message._id}` data-method=endpoints.delete.method class="btn btn-xs btn-danger")
+                          | Unpublish
+      div(class="panel panel-default")
+        div(class="panel-heading")
+          h2(class="panel-title") Inactive messages
+        div(class="panel-body")
+          - const inactiveMessagesListId = "inactive-messages-list"
+          p Messages that have been deactivated and are pending removal from instances. When a message has been removed from all instances it will be deleted and disappear from this list.
+          p Click on a message to see details and distribution status.
+          div(class="panel-group" id=activeMessagesListId)
+            each message in inactiveMessages
+              - const contextName = translateCriticalityToBootstrapContext(message.criticality)
+              - const toggleId = `inactiveMessage-toggle-${message._id}`
+              - const contentId = `inactiveMessage-content-${message._id}`
+              div(class="panel panel-default")
+                div(class="panel-heading" role="tab")
+                  h3(class="panel-title text-truncate")
+                    a(role="button" data-toggle="collapse" data-target=`#${contentId}` data-parent=`#${activeMessagesListId}` aria-expanded="false" aria-controls=contentId)
+                      | #{formatDateTime(message.timestamp)}: #{message.message}
+                div(id=contentId class="panel-collapse collapse" aria-labelledby=toggleId)
+                  div(class="panel-body")
+                    dl(class="dl-horizontal")
+                      dt Created:
+                      dd #{formatDateTime(message.timestamp)}
+                      dt Criticality
+                      dd(class=`bg-${contextName}`) #{message.criticality}
+                      dt Message
+                      dd #{message.message}
+                    table(class="table table-condensed")
+                      thead
+                        tr
+                          th Instance
+                          th Distribution status
+                      tbody
+                        each status in message.distributions
+                          tr
+                            td #{status.instance.name}
+                            td #{status.isActive ? 'Pending removal' : 'Unpublished'}
+                  div(class="panel-footer")
+                    div(class="btn-toolbar")
+                      div(class="btn-group")
+                        button(type="button" data-api-action="refreshPublishStates" data-location=`${endpoints.refreshPublishStates.path}/${message._id}` data-method=endpoints.refreshPublishStates.method class="btn btn-xs btn-danger")
+                          | Recheck publish states

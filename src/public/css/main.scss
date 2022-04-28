@@ -1,0 +1,12 @@
+// Bootstrap imports
+@import 'themes/default/variables';
+@import 'lib/bootstrap/bootstrap';
+@import 'lib/font-awesome/font-awesome';
+@import 'themes/default/default';
+
+// Global styling
+@import 'global/layout';
+@import 'global/typography';
+
+// View specific (could be distributed in bundles if they grow large, but for now it goes here
+@import 'views/serviceMessages';

@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h1 Server status messages
+  if error
+    .error There was an error
+    p= error
+  else
+    ul#statusMessages
+      each server in servers
+        li
+          if server.error
+            p= server.error.error
+          else
+            p Server 
+              b #{server.name} 
+              | Status: #{server.status}
+              | Status Message: #{server.statusMessage}
+            p InstanceId: #{server.instanceId}
+            p 
+              b Components
+            each component in server.components
+              p= component.name + ": Status " + component.statusMessage + ": " + component.statusMessage
