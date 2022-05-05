@@ -20,7 +20,7 @@
 	"license": "MIT",
 	"scripts": {
 		"start": "yarn serve",
-		"build": "yarn build-sass && yarn build-server && yarn build-client && yarn lint && yarn copy-static-assets",
+		"build": "yarn build-sass && yarn build-server && yarn build-client && yarn copy-static-assets",
 		"serve": "node dist/server.js",
 		"watch-node": "cross-env CONTROL_SUB_DEVICES_CONFIG_PATH=./control-sub-devices-example.json nodemon dist/server.js",
 		"watch": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch-sass\" \"yarn watch-server\" \"yarn watch-client\" \"yarn watch-node\"",
@@ -51,6 +51,7 @@
 		"node-fetch": "^2.6.1",
 		"pug": "^3.0.2",
 		"semver": "^5.7.1",
+		"tslib": "^2.4.0",
 		"winston": "^3.4.0"
 	},
 	"devDependencies": {

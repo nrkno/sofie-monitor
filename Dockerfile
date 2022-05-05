@@ -1,20 +1,18 @@
-FROM node:14-alpine
+# BUILD IMAGE
+FROM node:14
 
 WORKDIR /usr/src/app
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
-
-RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
-
-# Bundle app source
 COPY . .
 
-RUN npm run build
+RUN yarn install --check-files --frozen-lockfile
+RUN yarn build
+RUN yarn install --check-files --frozen-lockfile --production --force # purge dev-dependencies
+
+# DEPLOY IMAGE
+FROM node:14-alpine
+
+COPY --from=0 /usr/src/app /usr/src/app
+WORKDIR /usr/src/app
 
 EXPOSE 3000
-
-CMD [ "npm", "start"]
+CMD ["node", "dist/server.js"]
