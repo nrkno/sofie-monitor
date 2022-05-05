@@ -19,7 +19,7 @@ const defaultOptions: { redirect: RequestRedirect } = {
 	redirect: 'error',
 }
 const defaultHeaders = {
-	// TODO: compliance 
+	// TODO: compliance
 	'User-Agent': `sofie-monitor/sofie-core agent (node-fetch v2)`,
 }
 

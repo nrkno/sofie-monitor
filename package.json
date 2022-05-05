@@ -40,7 +40,8 @@
 		"lint:raw": "eslint --ext .ts --ext .js --ext .tsx --ext .jsx",
 		"lint": "yarn lint:raw ./src",
 		"lint-fix": "yarn lint --fix",
-		"license-validate": "yarn sofie-licensecheck"
+		"validate:dependencies": "yarn audit --groups dependencies && yarn license-validate",
+		"license-validate": "yarn sofie-licensecheck --allowPackages=\"caniuse-lite@1.0.30001297;rx@2.3.24\""
 	},
 	"dependencies": {
 		"@seald-io/nedb": "^2.2.0",
