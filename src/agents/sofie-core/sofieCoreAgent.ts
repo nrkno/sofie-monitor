@@ -201,7 +201,7 @@ async function sendUserActionApiPostRequest(href: string, actionPath: string, pa
 		})
 
 		if (payload) {
-			options.headers = Object.assign(options.headers, { 'Content-Type': 'application/json' })
+			options.headers = Object.assign({}, options.headers, { 'Content-Type': 'application/json' })
 			options.body = JSON.stringify(payload)
 		}
 
@@ -241,8 +241,9 @@ async function sendUserActionApiPostRequest(href: string, actionPath: string, pa
 
 async function checkResponse(response: Response, allowed: Array<number>): Promise<void> {
 	if (allowed.indexOf(response.status) < 0) {
+		const message = await response.text()
 		const err: SofieCoreAgentError = new Error(
-			`Unexpected response HTTP ${response.status} ${await response.text()}, wanted one of ${allowed.join(',')}!`
+			`Unexpected response HTTP ${response.status} ${message}, wanted one of ${allowed.join(',')}!`
 		)
 		err.responseStatus = response.status
 
