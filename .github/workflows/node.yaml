@@ -1,4 +1,4 @@
-name: NodeJS Build
+name: NodeJS Build and Push
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - '**'
     tags:
       - 'v**'
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -13,16 +14,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Use Node.js 14.x
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 14.x
 
       - name: Prepare environment
         run: yarn
-        
+
       - name: Run linter
         run: yarn lint
 
@@ -31,16 +32,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Use Node.js 14.x
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 14.x
 
       - name: Prepare environment
         run: yarn
-        
+
       - name: Build
         run: yarn build
 
@@ -54,15 +55,14 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js 14.x
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 14.x
       - name: Prepare Environment
         run: yarn
-        env:
-          CI: true
+
       - name: Validate production dependencies
         run: |
           if ! git log --format=oneline -n 1 | grep -q "\[ignore-audit\]"; then
@@ -70,87 +70,105 @@ jobs:
           else
             echo "Skipping audit"
           fi
-        env:
-          CI: true
 
   dockerhub-release:
-    name: Make dockerhub release
+    name: Make docker release
     runs-on: ubuntu-latest
-    # needs: TODO - reenable this
-    #   - build-and-test
+    needs: [lint, build-and-test, validate-prod-dependencies]
     timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Get the Docker tag
-        id: docker-tag
-        uses: yuya-takeyama/docker-tag-from-github-ref-action@2b0614b1338c8f19dd9d3ea433ca9bc0cc7057ba
-        with:
-          remove-version-tag-prefix: false
-      - name: Determine images to publish
-        id: image-tags
+      - uses: actions/checkout@v3
+
+      - name: Determine if images should be published to DockerHub
+        id: dockerhub
         run: |
-          IMAGES=
-          DOCKER_TAG=${{ steps.docker-tag.outputs.tag }}
           # check if a release branch, or master, or a tag
-          if [[ $DOCKER_TAG =~ ^release([0-9]+)$ || $DOCKER_TAG == "latest" || "${{ github.ref }}" == refs/tags/* ]]
+          if [[ "${{ github.ref }}" =~ ^refs/heads/release([0-9]+)$ || "${{ github.ref }}" == "refs/heads/master" || "${{ github.ref }}" == "refs/tags/*" ]]
           then
-            # If we have a dockerhub image name, then setup to publish there
-            if [ -z "${{ secrets.DOCKERHUB_IMAGE }}" ]
-            then
-              DOCKERHUB_PUBLISH="0"
-            else
-              DOCKERHUB_PUBLISH="1"
-              IMAGES="${{ secrets.DOCKERHUB_IMAGE }}:$DOCKER_TAG"$'\n'$IMAGES
-            fi
-
-            # If instructed, push to github packages
-            if [ -z "${{ secrets.GH_PACKAGES_ENABLED }}" ] || [ -z "${{ secrets.GITHUB_TOKEN }}" ]
-            then
-              GHCR_PUBLISH="0"
-            else
-              GHCR_PUBLISH="1"
-              IMAGES="ghcr.io/${{ github.repository }}:$DOCKER_TAG"$'\n'$IMAGES
-            fi
-
-            # debug output
-            echo dockerhub-publish $DOCKERHUB_PUBLISH
-            echo ghcr-publish $GHCR_PUBLISH
-            echo images $IMAGES
-            echo ::set-output name=images::"$IMAGES"
-            echo ::set-output name=dockerhub-publish::"$DOCKERHUB_PUBLISH"
-            echo ::set-output name=ghcr-publish::"$GHCR_PUBLISH"
+            DOCKERHUB_PUBLISH="1"
           else
-            echo "Skipping docker build"
+            DOCKERHUB_PUBLISH="0"
           fi
-      - name: Build
-        if: ${{ steps.image-tags.outputs.images }}
+          # debug output
+          echo "dockerhub-publish $DOCKERHUB_PUBLISH"
+          echo "dockerhub-publish=$DOCKERHUB_PUBLISH" >> $GITHUB_OUTPUT
+
+      - name: Check if push to GHCR is enabled
+        id: check-ghcr
+        env:
+          GHCR_ENABLED: ${{ secrets.GHCR_ENABLED }}
         run: |
-          yarn install --check-files --frozen-lockfile
-          yarn build
-          yarn install --check-files --frozen-lockfile --production --force 
+          echo "Enable push to GHCR: ${{ env.GHCR_ENABLED != '' }}"
+          echo "enable=${{ env.GHCR_ENABLED != '' }}" >> $GITHUB_OUTPUT
+
+      - name: Check if there is access to repo secrets (needed for build and push)
+        if: steps.dockerhub.outputs.dockerhub-publish == '1' || steps.check-ghcr.outputs.enable == 'true'
+        id: check-build-and-push
+        env:
+          SECRET_ACCESS: ${{ secrets.DOCKERHUB_IMAGE }}
+        run: |
+          echo "Enable build and push: ${{ env.SECRET_ACCESS != '' }}"
+          echo "enable=${{ env.SECRET_ACCESS != '' }}" >> $GITHUB_OUTPUT
+
+      - name: Get the Docker tag for GHCR
+        id: ghcr-tag
+        if: steps.check-build-and-push.outputs.enable == 'true'
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Get the Docker tag for DockerHub
+        id: dockerhub-tag
+        if: steps.check-build-and-push.outputs.enable == 'true'
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ${{ secrets.DOCKERHUB_IMAGE }}server-core
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=raw,value=latest,enable={{is_default_branch}}
+
       - name: Set up Docker Buildx
-        if: ${{ steps.image-tags.outputs.images }}
-        uses: docker/setup-buildx-action@v1
+        if: steps.check-build-and-push.outputs.enable == 'true'
+        uses: docker/setup-buildx-action@v2
+
       - name: Login to DockerHub
-        if: steps.image-tags.outputs.images && steps.image-tags.outputs.dockerhub-publish == '1'
-        uses: docker/login-action@v1
+        if: steps.check-build-and-push.outputs.enable == 'true' && steps.dockerhub.outputs.dockerhub-publish == '1'
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Login to GitHub Container Registry
-        if: steps.image-tags.outputs.images && steps.image-tags.outputs.ghcr-publish == '1'
-        uses: docker/login-action@v1
+        if: steps.check-build-and-push.outputs.enable == 'true' && steps.check-ghcr.outputs.enable == 'true'
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        if: ${{ steps.image-tags.outputs.images }}
+      - name: Build and push to GHCR
+        if: steps.check-build-and-push.outputs.enable == 'true' && steps.check-ghcr.outputs.enable == 'true'
+        uses: docker/build-push-action@v3
         with:
           context: .
-          file: Dockerfile
           push: true
-          tags: ${{ steps.image-tags.outputs.images }}
-   
+          labels: ${{ steps.ghcr-tag.outputs.labels }}
+          tags: "${{ steps.ghcr-tag.outputs.tags }}"
+
+      - name: Build and push to DockerHub
+        if: steps.check-build-and-push.outputs.enable == 'true' && steps.dockerhub.outputs.dockerhub-publish == '1'
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          labels: ${{ steps.dockerhub-tag.outputs.labels }}
+          tags: "${{ steps.dockerhub-tag.outputs.tags }}"
