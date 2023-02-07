@@ -53,7 +53,7 @@
 		"pug": "^3.0.2",
 		"semver": "^5.7.1",
 		"tslib": "^2.4.0",
-		"winston": "^3.4.0"
+		"winston": "^3.8.2"
 	},
 	"devDependencies": {
 		"@sofie-automation/code-standard-preset": "^0.5.1",
