@@ -1,5 +1,6 @@
 jest.mock('node-fetch')
 jest.mock('../src/data/sofieInstances/dataStore.ts')
+jest.mock('../src/data/serviceMessages/dataStore.ts')
 
 import fetch from 'node-fetch'
 const { Response } = jest.requireActual('node-fetch')

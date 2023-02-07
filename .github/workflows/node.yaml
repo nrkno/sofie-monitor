@@ -48,6 +48,10 @@ jobs:
       - name: Run tests
         run: yarn test
 
+      - name: Run tests one more time
+        run: yarn test
+        if: always()
+
   validate-prod-dependencies:
     name: Validate production dependencies
     runs-on: ubuntu-latest
