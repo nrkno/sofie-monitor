@@ -2,7 +2,7 @@
 	"name": "sofie-monitor",
 	"version": "0.3.0",
 	"engines": {
-		"node": ">= 14.x"
+		"node": ">= 18.x"
 	},
 	"files": [
 		"src",
