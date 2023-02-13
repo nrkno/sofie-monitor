@@ -58,7 +58,7 @@
 	"devDependencies": {
 		"@sofie-automation/code-standard-preset": "^0.5.1",
 		"@types/body-parser": "^1.19.0",
-		"@types/compression": "^0.0.35",
+		"@types/compression": "^1.7.2",
 		"@types/express": "^4.17.17",
 		"@types/jest": "^27.4.0",
 		"@types/jquery": "^3.5.16",
