@@ -51,13 +51,13 @@ async function remove(instance: SofieInstance): Promise<SofieInstance> {
  * @returns a typed object
  * @throws if the data can't be parsed (invalid input)
  */
-function parseStored(data: any): SofieInstance {
+function parseStored(data: Record<string, any>): SofieInstance {
 	if (!data) {
 		throw new Error('No input')
 	}
 	data.url = new URL(data.url)
 
-	return data
+	return data as SofieInstance
 }
 
 /**

@@ -1,4 +1,4 @@
-document.addEventListener('submit', async (event: Event) => {
+document.addEventListener('submit', (event: Event) => {
 	if (event.target instanceof HTMLFormElement && event.target.name === 'add-sofie-instance') {
 		event.preventDefault()
 		const form: HTMLFormElement = event.target
@@ -6,8 +6,9 @@ document.addEventListener('submit', async (event: Event) => {
 
 		const url = (form.elements.namedItem('url') as HTMLInputElement).value
 		const body = new URLSearchParams({ url })
-		await fetch(action, { method, body })
-		// tslint:disable-next-line: deprecation
-		window.location.reload()
+		void fetch(action, { method, body }).then(() => {
+			// tslint:disable-next-line: deprecation
+			window.location.reload()
+		})
 	}
 })

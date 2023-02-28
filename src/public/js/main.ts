@@ -13,12 +13,13 @@ if (document.forms.namedItem('post-service-message')) {
 
 // generalized handler for api actions (see /src/api/ for the actual api)
 
-document.addEventListener('click', async (event: Event) => {
+document.addEventListener('click', (event: Event) => {
 	if (event.target instanceof HTMLElement && event.target.dataset.apiAction) {
 		const { location, method } = event.target.dataset
 		if (location) {
-			await fetch(location, { method })
-			window.location.reload()
+			void fetch(location, { method }).then(() => {
+				window.location.reload()
+			})
 		}
 	}
 })

@@ -47,11 +47,9 @@ app.use((req, _res, next) => {
  * Primary app routes.
  */
 registerHealthHandler(app)
-app.get('/', statusMessage)
-app.get('/statusMessage', statusMessage)
-app.get('/serverVersions', (req, res) => {
-	return serverVersions(req as RequestWithTimer, res)
-})
+app.get('/', (req, res) => void statusMessage(req, res))
+app.get('/statusMessage', (req, res) => void statusMessage(req, res))
+app.get('/serverVersions', (req, res) => void serverVersions(req as RequestWithTimer, res))
 registerGlobalMessageFormhandler(app)
 registerSofieInstancesHandler(app)
 registerCoreControlHandler(app)

@@ -10,7 +10,7 @@ const dataStore = new Nedb({
 	autoload: true,
 })
 
-function create(message: ServiceMessage): Promise<ServiceMessage> {
+async function create(message: ServiceMessage): Promise<ServiceMessage> {
 	return new Promise((resolve, reject) => {
 		if (message._id) {
 			reject('Trying to create message which has an id already. Use update?')
@@ -31,7 +31,7 @@ function create(message: ServiceMessage): Promise<ServiceMessage> {
 	})
 }
 
-function list(): Promise<ServiceMessage[]> {
+async function list(): Promise<ServiceMessage[]> {
 	return new Promise((resolve, reject) => {
 		dataStore.find({}, (err: Error | null, messages: ServiceMessage[]) => {
 			if (err) {
@@ -47,7 +47,7 @@ function list(): Promise<ServiceMessage[]> {
 	})
 }
 
-function read(id: string): Promise<ServiceMessage> {
+async function read(id: string): Promise<ServiceMessage> {
 	return new Promise((resolve, reject) => {
 		dataStore.findOne({ _id: id }, (err: Error | null, message: ServiceMessage) => {
 			if (err) {
@@ -63,7 +63,7 @@ function read(id: string): Promise<ServiceMessage> {
 	})
 }
 
-function update(message: ServiceMessage): Promise<ServiceMessage> {
+async function update(message: ServiceMessage): Promise<ServiceMessage> {
 	const { _id } = message
 	return new Promise((resolve, reject) => {
 		if (!_id) {
@@ -94,7 +94,7 @@ function update(message: ServiceMessage): Promise<ServiceMessage> {
 	})
 }
 
-function remove(message: ServiceMessage): Promise<ServiceMessage> {
+async function remove(message: ServiceMessage): Promise<ServiceMessage> {
 	const { _id } = message
 
 	return new Promise((resolve, reject) => {

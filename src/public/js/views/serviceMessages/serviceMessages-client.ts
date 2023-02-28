@@ -3,11 +3,11 @@ import { findParent } from '../../utils/dom.js'
 
 export { init }
 
-function init() {
+function init(): void {
 	document.addEventListener('click', toggleAllMessageTargetsHandler)
 	document.addEventListener('click', messageTargetClickHandler)
 	document.addEventListener('click', criticalityClickHandler)
-	document.addEventListener('submit', formSubmitHandler)
+	document.addEventListener('submit', (event) => void formSubmitHandler(event))
 }
 
 function toggleAllMessageTargetsHandler(event: Event) {

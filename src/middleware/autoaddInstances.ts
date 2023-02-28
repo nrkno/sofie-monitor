@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import { URL } from 'url'
 import { addInstance, getInstanceByHost } from '../data/sofieInstances/api'
 import { SofieInstance } from '../data/sofieInstances/SofieInstance'
@@ -20,7 +20,11 @@ export { addInstancesFromQuerystringParam }
  * @param res
  * @param next
  */
-async function addInstancesFromQuerystringParam(req: RequestWithInstances, _res: Response, next: any) {
+async function addInstancesFromQuerystringParam(
+	req: RequestWithInstances,
+	_res: Response,
+	next: NextFunction
+): Promise<void> {
 	try {
 		const hosts = []
 		for (const value of getQuerystringParamValues(req as Request, 'servers')) {

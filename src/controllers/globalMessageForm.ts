@@ -8,7 +8,7 @@ import { formatDateTime } from '../lib/dateFormat'
 import { getQuerystringParamValues, getServerData } from '../lib/lib'
 
 export function registerGlobalMessageFormhandler(app: Application): void {
-	app.get('/globalMessageForm', getHandler)
+	app.get('/globalMessageForm', (req, res) => void getHandler(req, res))
 	logger.debug('registered globalMessageForm route')
 }
 

@@ -14,9 +14,9 @@ function registerSofieInstancesHandler(app: Application): void {
 	app.get(
 		'/sofieInstances',
 		(req, res, next) => {
-			return addInstancesFromQuerystringParam(req as RequestWithInstances, res, next)
+			void addInstancesFromQuerystringParam(req as RequestWithInstances, res, next)
 		},
-		getHandler
+		(req, res) => void getHandler(req, res)
 	)
 	logger.debug('registered sofieInstances route')
 }

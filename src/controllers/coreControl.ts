@@ -8,7 +8,7 @@ import logger from '../util/logger'
 import fs from 'fs'
 
 export function registerCoreControlHandler(app: Application): void {
-	app.get('/coreControl', getHandler)
+	app.get('/coreControl', (req, res) => void getHandler(req, res))
 
 	logger.debug('registered core control panel route')
 }

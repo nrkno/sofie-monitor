@@ -20,26 +20,26 @@ const endpoints: { [index: string]: EndpointDescription } = {}
 function registerServiceMessageApiHandlers(app: Application, rootPath: string): void {
 	const path = `${rootPath}/${PATHNAME}`
 
-	app.get(path, listMessagesHandler)
+	app.get(path, (req, res) => void listMessagesHandler(req, res))
 	endpoints.list = { path, method: 'GET', useId: false }
 
-	app.post(`${path}`, createMessageHandler)
+	app.post(`${path}`, (req, res) => void createMessageHandler(req, res))
 	endpoints.create = { path, method: 'POST', useId: false }
 
-	app.get(`${path}/:id`, getMessageHandler)
+	app.get(`${path}/:id`, (req, res) => void getMessageHandler(req, res))
 	endpoints.read = { path, method: 'GET', useId: true }
 
-	app.post(`${path}/refreshPublishStates/:id`, refreshPublishStatesHandler)
+	app.post(`${path}/refreshPublishStates/:id`, (req, res) => void refreshPublishStatesHandler(req, res))
 	endpoints.refreshPublishStates = {
 		path: `${path}/refreshPublishStates`,
 		method: 'POST',
 		useId: true,
 	}
 
-	app.post(`${path}/:id`, updateMessageHandler)
+	app.post(`${path}/:id`, (req, res) => void updateMessageHandler(req, res))
 	endpoints.update = { path, method: 'POST', useId: true }
 
-	app.delete(`${path}/:id`, deleteMessageHandler)
+	app.delete(`${path}/:id`, (req, res) => void deleteMessageHandler(req, res))
 	endpoints.delete = { path, method: 'DELETE', useId: true }
 }
 

@@ -1,6 +1,6 @@
 const CLASSNAME_ENABLE_DISABLE_BUTTON = 'rk-online-offline-control'
 
-document.addEventListener('click', coreControlEnableDisableSubDevicesClickHandler)
+document.addEventListener('click', (event) => void coreControlEnableDisableSubDevicesClickHandler(event))
 
 async function coreControlEnableDisableSubDevicesClickHandler(event: MouseEvent): Promise<void> {
 	if (!(event.target instanceof HTMLElement && event.target.classList.contains(CLASSNAME_ENABLE_DISABLE_BUTTON))) {

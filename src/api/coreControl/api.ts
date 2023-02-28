@@ -8,7 +8,7 @@ const endpoints: { [index: string]: EndpointDescription } = {}
 
 export function registerCoreControlApiHandlers(app: Application, apiRoot: string): void {
 	const path = `${apiRoot}/${PATHNAME}/peripheralDevice/subDevice/setState`
-	app.post(`${path}`, setPeripheralSubDeviceStateHandler)
+	app.post(`${path}`, (req, res) => void setPeripheralSubDeviceStateHandler(req, res))
 
 	endpoints.setPeripheralSubDeviceState = {
 		path,
