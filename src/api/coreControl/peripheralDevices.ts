@@ -12,11 +12,11 @@ export interface SubDeviceStatePayload {
 	desiredSubDeviceState: SofieSubDeviceState
 }
 
-export function isSofieSubDeviceState(obj: SofieSubDeviceState): obj is SofieSubDeviceState {
+export function isSofieSubDeviceState(obj: Record<string, any>): obj is SofieSubDeviceState {
 	return obj && typeof obj.enabled === 'boolean'
 }
 
-export function isSubDeviceStatePayload(obj: SubDeviceStatePayload): obj is SubDeviceStatePayload {
+export function isSubDeviceStatePayload(obj: Record<string, any>): obj is SubDeviceStatePayload {
 	if (!obj) {
 		return false
 	}
