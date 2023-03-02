@@ -10,6 +10,7 @@ import { statusMessage } from './controllers/serverStatus'
 import { serverVersions } from './controllers/serverVersions'
 import { registerSofieInstancesHandler } from './controllers/sofieInstances'
 import { RequestWithTimer } from './RequestExtension'
+import { callAsyncAsCallback } from './util/callAsyncAsCallback'
 
 // Allow all SSL certificates, this is a temporary solution (ish)
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
@@ -47,9 +48,9 @@ app.use((req, _res, next) => {
  * Primary app routes.
  */
 registerHealthHandler(app)
-app.get('/', (req, res) => void statusMessage(req, res))
-app.get('/statusMessage', (req, res) => void statusMessage(req, res))
-app.get('/serverVersions', (req, res) => void serverVersions(req as RequestWithTimer, res))
+app.get('/', (req, res) => callAsyncAsCallback(statusMessage, undefined, req, res))
+app.get('/statusMessage', (req, res) => callAsyncAsCallback(statusMessage, undefined, req, res))
+app.get('/serverVersions', (req, res) => callAsyncAsCallback(serverVersions, undefined, req as RequestWithTimer, res))
 registerGlobalMessageFormhandler(app)
 registerSofieInstancesHandler(app)
 registerCoreControlHandler(app)

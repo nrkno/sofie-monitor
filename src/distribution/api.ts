@@ -1,3 +1,4 @@
+import { callAsyncAsCallback } from '../util/callAsyncAsCallback'
 import { ServiceMessage } from '../data/serviceMessages/ServiceMessage'
 import logger from '../util/logger'
 import { Command } from './Command'
@@ -142,7 +143,7 @@ async function retryingExecution(job: Job): Promise<void> {
 			logger.warn(`Aborting job after ${job.attempts}: ${error.message}`, { job, error })
 		} else {
 			setTimeout(
-				() => void retryingExecution(job),
+				() => callAsyncAsCallback(retryingExecution, undefined, job),
 				job.waitingTimeBeforeRetry ?? DEFAULT_JOB_WAITING_PERIOD_BEFORE_RETRY
 			)
 		}
@@ -153,6 +154,6 @@ function process(jobs: Array<Job>): void {
 	for (const job of jobs) {
 		job.attempts = 0
 		job.waitingTimeBeforeRetry = DEFAULT_JOB_WAITING_PERIOD_BEFORE_RETRY
-		setTimeout(() => void retryingExecution(job), 1)
+		setTimeout(() => callAsyncAsCallback(retryingExecution, undefined, job), 1)
 	}
 }

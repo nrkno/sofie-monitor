@@ -1,4 +1,5 @@
 import { Application } from 'express'
+import { callAsyncAsCallback } from '../../util/callAsyncAsCallback'
 import logger from '../../util/logger'
 import { EndpointDescription } from '../api'
 import { setPeripheralSubDeviceStateHandler } from './peripheralDevices'
@@ -8,7 +9,7 @@ const endpoints: { [index: string]: EndpointDescription } = {}
 
 export function registerCoreControlApiHandlers(app: Application, apiRoot: string): void {
 	const path = `${apiRoot}/${PATHNAME}/peripheralDevice/subDevice/setState`
-	app.post(`${path}`, (req, res) => void setPeripheralSubDeviceStateHandler(req, res))
+	app.post(`${path}`, (req, res) => callAsyncAsCallback(setPeripheralSubDeviceStateHandler, undefined, req, res))
 
 	endpoints.setPeripheralSubDeviceState = {
 		path,

@@ -1,4 +1,6 @@
 // eslint-disable-next-line node/no-missing-import
+import { callAsyncAsCallback } from '../../utils/callAsyncAsCallback.js'
+// eslint-disable-next-line node/no-missing-import
 import { findParent } from '../../utils/dom.js'
 
 export { init }
@@ -7,7 +9,7 @@ function init(): void {
 	document.addEventListener('click', toggleAllMessageTargetsHandler)
 	document.addEventListener('click', messageTargetClickHandler)
 	document.addEventListener('click', criticalityClickHandler)
-	document.addEventListener('submit', (event) => void formSubmitHandler(event))
+	document.addEventListener('submit', (event) => callAsyncAsCallback(formSubmitHandler, undefined, event))
 }
 
 function toggleAllMessageTargetsHandler(event: Event) {

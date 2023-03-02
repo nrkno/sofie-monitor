@@ -6,9 +6,10 @@ import { formatDateTime } from '../lib/dateFormat'
 import { getQuerystringParamValues, getServerData } from '../lib/lib'
 import logger from '../util/logger'
 import fs from 'fs'
+import { callAsyncAsCallback } from '../util/callAsyncAsCallback'
 
 export function registerCoreControlHandler(app: Application): void {
-	app.get('/coreControl', (req, res) => void getHandler(req, res))
+	app.get('/coreControl', (req, res) => callAsyncAsCallback(getHandler, undefined, req, res))
 
 	logger.debug('registered core control panel route')
 }
