@@ -54,7 +54,7 @@ async function createServiceMessage(
 /**
  * Fetches all messages currently in the data store, regardless of status
  */
-function getAllMessages(): Promise<ServiceMessage[]> {
+async function getAllMessages(): Promise<ServiceMessage[]> {
 	return list()
 }
 
@@ -63,7 +63,7 @@ function getAllMessages(): Promise<ServiceMessage[]> {
  *
  * @param id the id for the message
  */
-function getMessage(id: string): Promise<ServiceMessage> {
+async function getMessage(id: string): Promise<ServiceMessage> {
 	return read(id)
 }
 

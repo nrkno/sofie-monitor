@@ -11,7 +11,7 @@ const dataStore = new Nedb({
 // index documents by host URL, and ensure unique host URLs
 dataStore.ensureIndex({ fieldName: 'url', unique: true })
 
-function create(instance: SofieInstance): Promise<SofieInstance> {
+async function create(instance: SofieInstance): Promise<SofieInstance> {
 	return new Promise((resolve, reject) => {
 		if (instance._id) {
 			reject('Trying to create instance which has an id already. Use update?')
@@ -32,7 +32,7 @@ function create(instance: SofieInstance): Promise<SofieInstance> {
 	})
 }
 
-function list(): Promise<SofieInstance[]> {
+async function list(): Promise<SofieInstance[]> {
 	return new Promise((resolve, reject) => {
 		dataStore.find({}, (err: Error, instances: any[]) => {
 			if (err) {
@@ -48,7 +48,7 @@ function list(): Promise<SofieInstance[]> {
 	})
 }
 
-function findByURL(url: URL): Promise<SofieInstance | null> {
+async function findByURL(url: URL): Promise<SofieInstance | null> {
 	return new Promise((resolve, reject) => {
 		dataStore.findOne({ url: url.href }, (err: Error | null, instance: any) => {
 			if (err) {
@@ -68,7 +68,7 @@ function findByURL(url: URL): Promise<SofieInstance | null> {
 	})
 }
 
-function read(id: string): Promise<SofieInstance> {
+async function read(id: string): Promise<SofieInstance> {
 	return new Promise((resolve, reject) => {
 		dataStore.findOne({ _id: id }, (err: Error | null, instance: any) => {
 			if (err) {
@@ -84,7 +84,7 @@ function read(id: string): Promise<SofieInstance> {
 	})
 }
 
-function update(instance: SofieInstance): Promise<SofieInstance> {
+async function update(instance: SofieInstance): Promise<SofieInstance> {
 	const { _id } = instance
 	return new Promise((resolve, reject) => {
 		if (!_id) {
@@ -114,7 +114,7 @@ function update(instance: SofieInstance): Promise<SofieInstance> {
 	})
 }
 
-function remove(instance: SofieInstance): Promise<SofieInstance> {
+async function remove(instance: SofieInstance): Promise<SofieInstance> {
 	const { _id } = instance
 	return new Promise((resolve, reject) => {
 		if (!_id) {
@@ -141,13 +141,13 @@ function remove(instance: SofieInstance): Promise<SofieInstance> {
  * @returns a typed object
  * @throws if the data can't be parsed (invalid input)
  */
-function parseStored(data: any): SofieInstance {
+function parseStored(data: Record<string, any>): SofieInstance {
 	if (!data) {
 		throw new Error('No input')
 	}
 	data.url = new URL(data.url)
 
-	return data
+	return data as SofieInstance
 }
 
 /**

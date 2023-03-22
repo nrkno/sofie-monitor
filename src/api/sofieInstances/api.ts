@@ -1,4 +1,5 @@
 import { Application, Request, Response } from 'express'
+import { callAsyncAsCallback } from '../../util/callAsyncAsCallback'
 import { URL } from 'url'
 import {
 	addInstance,
@@ -18,13 +19,13 @@ const endpoints: { [index: string]: EndpointDescription } = {}
 function registerSofieInstancesApiHandlers(app: Application, rootPath: string): void {
 	const path = `${rootPath}/${PATHNAME}`
 
-	app.post(path, createInstanceHandler)
+	app.post(path, (req, res) => callAsyncAsCallback(createInstanceHandler, undefined, req, res))
 	endpoints.create = { path, method: 'POST' }
 
-	app.put(`${path}/:id`, updateInstanceHandler)
+	app.put(`${path}/:id`, (req, res) => callAsyncAsCallback(updateInstanceHandler, undefined, req, res))
 	endpoints.update = { path, method: 'PUT', useId: true }
 
-	app.delete(`${path}/:id`, deleteInstanceHandler)
+	app.delete(`${path}/:id`, (req, res) => callAsyncAsCallback(deleteInstanceHandler, undefined, req, res))
 	endpoints.delete = { path, method: 'DELETE', useId: true }
 }
 

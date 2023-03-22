@@ -27,7 +27,7 @@ function parseServerResponsesToStatusMessages(resp: any): any {
 	}
 }
 
-export async function statusMessage(req: Request, res: Response) {
+export async function statusMessage(req: Request, res: Response): Promise<any> {
 	const hosts = []
 	for (const value of getQuerystringParamValues(req, 'servers')) {
 		if (value.trim()) {

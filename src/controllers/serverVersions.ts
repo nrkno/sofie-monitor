@@ -78,7 +78,7 @@ function parseServerResponsesToVersions(responses: any[]) {
 	}
 }
 
-export async function serverVersions(req: RequestWithTimer, res: Response) {
+export async function serverVersions(req: RequestWithTimer, res: Response): Promise<void> {
 	const hosts = []
 	for (const value of getQuerystringParamValues(req as Request, 'servers')) {
 		if (value.trim()) {

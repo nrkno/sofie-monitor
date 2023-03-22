@@ -22,15 +22,15 @@ async function addInstance(url: URL): Promise<SofieInstance> {
 	}
 }
 
-function getInstance(id: string): Promise<SofieInstance> {
+async function getInstance(id: string): Promise<SofieInstance> {
 	return read(id)
 }
 
-function getInstanceByHost(url: URL): Promise<SofieInstance | null> {
+async function getInstanceByHost(url: URL): Promise<SofieInstance | null> {
 	return findByURL(url)
 }
 
-function getAllInstances(): Promise<SofieInstance[]> {
+async function getAllInstances(): Promise<SofieInstance[]> {
 	return list()
 }
 

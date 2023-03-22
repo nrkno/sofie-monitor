@@ -1,4 +1,5 @@
 import { Application, Request, Response } from 'express'
+import { callAsyncAsCallback } from '../util/callAsyncAsCallback'
 import logger from '..//util/logger'
 import { getEndpoints } from '../api/sofieInstances/api'
 import { getAllInstances } from '../data/sofieInstances/api'
@@ -14,9 +15,9 @@ function registerSofieInstancesHandler(app: Application): void {
 	app.get(
 		'/sofieInstances',
 		(req, res, next) => {
-			return addInstancesFromQuerystringParam(req as RequestWithInstances, res, next)
+			callAsyncAsCallback(addInstancesFromQuerystringParam, undefined, req as RequestWithInstances, res, next)
 		},
-		getHandler
+		(req, res) => callAsyncAsCallback(getHandler, undefined, req, res)
 	)
 	logger.debug('registered sofieInstances route')
 }

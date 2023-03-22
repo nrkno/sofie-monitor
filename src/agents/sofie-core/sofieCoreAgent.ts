@@ -152,7 +152,7 @@ async function getMessage(id: string, instance: SofieInstance): Promise<ServiceM
 		if (response.status === 404) {
 			return null
 		}
-		const retrievedMessage = await response.json()
+		const retrievedMessage = (await response.json()) as Record<string, any>
 
 		return {
 			_id: retrievedMessage.id,
@@ -184,7 +184,7 @@ async function getMessage(id: string, instance: SofieInstance): Promise<ServiceM
  * @throws if something goes wrong
  * @returns
  */
-async function sendUserActionApiPostRequest(href: string, actionPath: string, payload?: any): Promise<any | null> {
+async function sendUserActionApiPostRequest<T>(href: string, actionPath: string, payload?: T): Promise<any | null> {
 	if (actionPath.trim() === '') {
 		throw new Error('Unable to send user action POST request, path to action is empty')
 	}
@@ -218,7 +218,7 @@ async function sendUserActionApiPostRequest(href: string, actionPath: string, pa
 		// parse response body if exists, return null if not or if not json
 		if (response.status !== 204 && Number(response.headers.get('Content-Length')) > 0) {
 			try {
-				const responsePayload = await response.json()
+				const responsePayload = (await response.json()) as Record<string, any>
 				return Object.keys(responsePayload).length > 0 ? responsePayload : true
 			} catch (err: any) {
 				return null

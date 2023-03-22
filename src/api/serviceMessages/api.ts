@@ -1,4 +1,5 @@
 import { Application, Request, Response } from 'express'
+import { callAsyncAsCallback } from '../../util/callAsyncAsCallback'
 import { getMessage as getMessageFromInstance } from '../../agents/sofie-core/sofieCoreAgent'
 import {
 	createServiceMessage,
@@ -20,26 +21,30 @@ const endpoints: { [index: string]: EndpointDescription } = {}
 function registerServiceMessageApiHandlers(app: Application, rootPath: string): void {
 	const path = `${rootPath}/${PATHNAME}`
 
-	app.get(path, listMessagesHandler)
+	app.get(path, (req, res) => callAsyncAsCallback(listMessagesHandler, undefined, req, res))
 	endpoints.list = { path, method: 'GET', useId: false }
 
-	app.post(`${path}`, createMessageHandler)
+	app.post(`${path}`, (req, res) => callAsyncAsCallback(createMessageHandler, undefined, req, res))
+
 	endpoints.create = { path, method: 'POST', useId: false }
 
-	app.get(`${path}/:id`, getMessageHandler)
+	app.get(`${path}/:id`, (req, res) => callAsyncAsCallback(getMessageHandler, undefined, req, res))
 	endpoints.read = { path, method: 'GET', useId: true }
 
-	app.post(`${path}/refreshPublishStates/:id`, refreshPublishStatesHandler)
+	app.post(`${path}/refreshPublishStates/:id`, (req, res) =>
+		callAsyncAsCallback(refreshPublishStatesHandler, undefined, req, res)
+	)
+
 	endpoints.refreshPublishStates = {
 		path: `${path}/refreshPublishStates`,
 		method: 'POST',
 		useId: true,
 	}
 
-	app.post(`${path}/:id`, updateMessageHandler)
+	app.post(`${path}/:id`, (req, res) => callAsyncAsCallback(updateMessageHandler, undefined, req, res))
 	endpoints.update = { path, method: 'POST', useId: true }
 
-	app.delete(`${path}/:id`, deleteMessageHandler)
+	app.delete(`${path}/:id`, (req, res) => callAsyncAsCallback(deleteMessageHandler, undefined, req, res))
 	endpoints.delete = { path, method: 'DELETE', useId: true }
 }
 

@@ -6,6 +6,8 @@ import { init as initServiceMessages } from './views/serviceMessages/serviceMess
 import './views/sofieInstances/sofieInstances-client.js'
 // eslint-disable-next-line node/no-missing-import
 import './views/coreControl/coreControl-client.js'
+// eslint-disable-next-line node/no-missing-import
+import { callAsyncAsCallback } from './utils/callAsyncAsCallback.js'
 
 if (document.forms.namedItem('post-service-message')) {
 	initServiceMessages()
@@ -13,12 +15,11 @@ if (document.forms.namedItem('post-service-message')) {
 
 // generalized handler for api actions (see /src/api/ for the actual api)
 
-document.addEventListener('click', async (event: Event) => {
+document.addEventListener('click', (event: Event) => {
 	if (event.target instanceof HTMLElement && event.target.dataset.apiAction) {
 		const { location, method } = event.target.dataset
 		if (location) {
-			await fetch(location, { method })
-			window.location.reload()
+			callAsyncAsCallback(fetch, () => window.location.reload(), location, { method })
 		}
 	}
 })

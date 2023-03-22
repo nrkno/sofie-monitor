@@ -6,9 +6,10 @@ import { Criticality } from '../data/serviceMessages/ServiceMessage'
 import { getAllInstances } from '../data/sofieInstances/api'
 import { formatDateTime } from '../lib/dateFormat'
 import { getQuerystringParamValues, getServerData } from '../lib/lib'
+import { callAsyncAsCallback } from '../util/callAsyncAsCallback'
 
 export function registerGlobalMessageFormhandler(app: Application): void {
-	app.get('/globalMessageForm', getHandler)
+	app.get('/globalMessageForm', (req, res) => callAsyncAsCallback(getHandler, undefined, req, res))
 	logger.debug('registered globalMessageForm route')
 }
 

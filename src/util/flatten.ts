@@ -8,7 +8,7 @@ export { flatten }
  * @param input whatever you'd like to print as a simple string
  * @returns a string representing the value of the input
  */
-function flatten(input: any, includeInherited?: boolean): string {
+function flatten<T>(input: T, includeInherited?: boolean): string {
 	if (typeof input === 'object') {
 		const props = []
 		for (const name in input) {
