@@ -76,7 +76,7 @@
 		"jsdom": "^21.1.1",
 		"node-sass": "^8.0.0",
 		"nodemon": "^2.0.22",
-		"prettier": "2.8.7",
+		"prettier": "2.8.8",
 		"shelljs": "^0.8.5",
 		"supertest": "^6.3.3",
 		"ts-jest": "^29.1.0",
