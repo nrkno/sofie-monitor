@@ -51,7 +51,7 @@
 		"express-validator": "^7.0.1",
 		"node-fetch": "^2.6.9",
 		"pug": "^3.0.2",
-		"semver": "^7.3.8",
+		"semver": "^7.5.0",
 		"tslib": "^2.5.0",
 		"winston": "^3.8.2"
 	},
