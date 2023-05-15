@@ -718,10 +718,10 @@
   dependencies:
     "@sinonjs/commons" "^2.0.0"
 
-"@sofie-automation/code-standard-preset@^2.4.6":
-  version "2.4.6"
-  resolved "https://registry.yarnpkg.com/@sofie-automation/code-standard-preset/-/code-standard-preset-2.4.6.tgz#550085701c3e38e4af1d8627cdeef70f80c5e45f"
-  integrity sha512-+mMGWff7JzpUWeTgVekp9/sx1NRqZ3II8zD7g8iwF38s0aZCUUEeHEhZwzIOq1VmtXhL2Xq2J/L+i/El/Ns5oA==
+"@sofie-automation/code-standard-preset@^2.4.7":
+  version "2.4.7"
+  resolved "https://registry.yarnpkg.com/@sofie-automation/code-standard-preset/-/code-standard-preset-2.4.7.tgz#2e740ba3de55d7fb627ba76ea9d3e6aa65bb6773"
+  integrity sha512-Mg0J7vwpxizO1fce2NI3pHyzXcXxsxrWQ4787Wo+XZDwwrl8a7hb0lk/KMj+tISIEe84W2gMMHImGDSByHmuyg==
   dependencies:
     "@sofie-automation/eslint-plugin" "^0.1.1"
     "@typescript-eslint/eslint-plugin" "^5.59.1"
