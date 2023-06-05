@@ -52,7 +52,7 @@
 		"node-fetch": "^2.6.9",
 		"pug": "^3.0.2",
 		"semver": "^7.5.1",
-		"tslib": "^2.5.2",
+		"tslib": "^2.5.3",
 		"winston": "^3.8.2"
 	},
 	"devDependencies": {
