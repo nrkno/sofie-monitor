@@ -12,3 +12,9 @@ updates:
       interval: "weekly"
     reviewers:
       - "@nrkno/sofie-ops"
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "@nrkno/sofie-ops"
