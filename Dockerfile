@@ -1,5 +1,5 @@
 # BUILD IMAGE
-FROM node:18
+FROM node:20
 
 WORKDIR /usr/src/app
 COPY . .
@@ -9,7 +9,7 @@ RUN yarn build
 RUN yarn install --check-files --frozen-lockfile --production --force # purge dev-dependencies
 
 # DEPLOY IMAGE
-FROM node:18-alpine
+FROM node:20-alpine
 
 COPY --from=0 /usr/src/app /usr/src/app
 WORKDIR /usr/src/app
