@@ -23,6 +23,13 @@ function compileVersions(component: any, prefix = ''): Versions {
 			Object.keys(compiledVersions).forEach((key) => (versions[key] = compiledVersions[key]))
 		})
 	}
+	if (component._extVersions) {
+		component._extVersions.forEach((child: PromiseSettledResult<any>) => {
+			if (child.status === 'rejected' || child.value.error) return
+			const compiledVersions = compileVersions(child.value, '~' + child.value.name + '.')
+			Object.keys(compiledVersions).forEach((key) => (versions[key] = compiledVersions[key]))
+		})
+	}
 	return versions
 }
 
