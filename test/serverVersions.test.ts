@@ -32,8 +32,11 @@ describe('GET /serverVersions', () => {
 		expect(dom.window.document.characterSet).toEqual('UTF-8')
 		dom.window.document.getElementById('versions')
 
-		expect(fetch).toHaveBeenCalledTimes(1)
-		expect(fetch).toHaveBeenCalledWith('http://localhost:3000/health', {
+		expect(fetch).toHaveBeenCalledTimes(2)
+		expect(fetch).toHaveBeenNthCalledWith(1, 'http://localhost:3000/health', {
+			method: 'GET',
+		})
+		expect(fetch).toHaveBeenNthCalledWith(2, 'http://localhost:3000/external/sisyfos/health', {
 			method: 'GET',
 		})
 	})
