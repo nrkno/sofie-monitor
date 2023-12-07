@@ -1,6 +1,6 @@
 # Sofie Monitor
 
-This is the _Sofie Monitor_ application of the [**Sofie** TV Automation System](https://github.com/nrkno/Sofie-TV-automation/).
+This is the _Sofie Monitor_ application of the [_**Sofie** TV Automation System_](https://github.com/nrkno/Sofie-TV-automation/).
 
 The _Sofie Monitor_ is a basic monitoring service.
 
