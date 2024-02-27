@@ -61,7 +61,7 @@ async function setPeripheralSubDeviceState(
 	href: string,
 	peripheralDeviceId: string,
 	subDeviceId: string,
-	desiredState: SofieSubDeviceState
+	desiredState: SofieSubDeviceState,
 ) {
 	const actionPath = `/disablePeripheralSubDevice/restApi/${peripheralDeviceId}/${subDeviceId}/${desiredState.enabled}`
 

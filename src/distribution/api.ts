@@ -42,7 +42,7 @@ function distribute(message: ServiceMessage, isUpdate = false): void {
 		if (!targetInstanceId || !messageId) {
 			logger.warn(
 				`Unable to add job for message, missing ${targetInstanceId ? 'message id' : targetInstanceId}`,
-				{ command, serviceMessage: message, instance: distribution.instance }
+				{ command, serviceMessage: message, instance: distribution.instance },
 			)
 			continue
 		}
@@ -86,7 +86,7 @@ function recall(message: ServiceMessage): void {
 		if (!targetInstanceId || !messageId) {
 			logger.warn(
 				`Unable to add job for message, missing ${targetInstanceId ? 'message id' : targetInstanceId}`,
-				{ command: Command.DELETE, serviceMessage: message, instance: distribution.instance }
+				{ command: Command.DELETE, serviceMessage: message, instance: distribution.instance },
 			)
 			continue
 		}
@@ -144,7 +144,7 @@ async function retryingExecution(job: Job): Promise<void> {
 		} else {
 			setTimeout(
 				() => callAsyncAsCallback(retryingExecution, undefined, job),
-				job.waitingTimeBeforeRetry ?? DEFAULT_JOB_WAITING_PERIOD_BEFORE_RETRY
+				job.waitingTimeBeforeRetry ?? DEFAULT_JOB_WAITING_PERIOD_BEFORE_RETRY,
 			)
 		}
 	}

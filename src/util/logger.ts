@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') {
 		new transports.Console({
 			level: 'error',
 			format: format.json(),
-		})
+		}),
 	)
 } else {
 	const logLevel = process.env.DEBUG === 'true' ? 'debug' : 'warn'
@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === 'production') {
 		new transports.Console({
 			level: logLevel,
 			format: format.combine(format.colorize(), format.simple()),
-		})
+		}),
 	)
 	logger.debug('Logging initialized at debug level')
 }

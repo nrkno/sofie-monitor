@@ -23,19 +23,19 @@ if (process.env.CONTROL_SUB_DEVICES_CONFIG_PATH) {
 
 		rk5rk6SubDevicesToEnableDisable.rk5.disablePayloads = createPeripheralSubDevicePayloads(
 			rk5rk6SubDevicesToEnableDisable.rk5,
-			false
+			false,
 		)
 		rk5rk6SubDevicesToEnableDisable.rk5.enablePayloads = createPeripheralSubDevicePayloads(
 			rk5rk6SubDevicesToEnableDisable.rk5,
-			true
+			true,
 		)
 		rk5rk6SubDevicesToEnableDisable.rk6.disablePayloads = createPeripheralSubDevicePayloads(
 			rk5rk6SubDevicesToEnableDisable.rk6,
-			false
+			false,
 		)
 		rk5rk6SubDevicesToEnableDisable.rk6.enablePayloads = createPeripheralSubDevicePayloads(
 			rk5rk6SubDevicesToEnableDisable.rk6,
-			true
+			true,
 		)
 	} catch (e) {
 		logger.error(`Failed to load list of sub-devices to control: ${e}`)

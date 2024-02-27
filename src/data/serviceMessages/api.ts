@@ -21,7 +21,7 @@ export { createServiceMessage, getAllMessages, getMessage, removeServiceMessage,
 async function createServiceMessage(
 	criticality: Criticality,
 	message: string,
-	targetHosts: Array<string>
+	targetHosts: Array<string>,
 ): Promise<ServiceMessage> {
 	const instances = await getInstancesFromTargetHosts(targetHosts)
 	logger.debug(`Got ${instances.length} instances from ${targetHosts.length} target hosts`, {

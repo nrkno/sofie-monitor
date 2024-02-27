@@ -23,7 +23,7 @@ export { addInstancesFromQuerystringParam }
 async function addInstancesFromQuerystringParam(
 	req: RequestWithInstances,
 	_res: Response,
-	next: NextFunction
+	next: NextFunction,
 ): Promise<void> {
 	try {
 		const hosts = []

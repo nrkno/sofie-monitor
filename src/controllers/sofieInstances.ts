@@ -17,7 +17,7 @@ function registerSofieInstancesHandler(app: Application): void {
 		(req, res, next) => {
 			callAsyncAsCallback(addInstancesFromQuerystringParam, undefined, req as RequestWithInstances, res, next)
 		},
-		(req, res) => callAsyncAsCallback(getHandler, undefined, req, res)
+		(req, res) => callAsyncAsCallback(getHandler, undefined, req, res),
 	)
 	logger.debug('registered sofieInstances route')
 }

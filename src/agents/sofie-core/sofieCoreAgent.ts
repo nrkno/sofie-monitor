@@ -58,7 +58,7 @@ async function createMessage(message: ServiceMessage, instance: SofieInstance): 
 					'Content-Type': 'application/json',
 					Accept: 'application/json',
 				}),
-			})
+			}),
 		)
 		await checkResponse(response, [200, 201])
 
@@ -99,7 +99,7 @@ async function recallMessage(message: ServiceMessage, instance: SofieInstance): 
 		targetUrl.pathname = `${REMOTE_SERVICEMESSAGE_API_PATH}/${id}`
 		const response = await fetch(
 			targetUrl.href,
-			Object.assign({}, defaultOptions, { method: 'delete', headers: defaultHeaders })
+			Object.assign({}, defaultOptions, { method: 'delete', headers: defaultHeaders }),
 		)
 		await checkResponse(response, [200, 404])
 
@@ -146,7 +146,7 @@ async function getMessage(id: string, instance: SofieInstance): Promise<ServiceM
 					'Content-Type': 'application/json',
 					Accept: 'application/json',
 				}),
-			})
+			}),
 		)
 		await checkResponse(response, [200, 404])
 		if (response.status === 404) {
@@ -243,7 +243,7 @@ async function checkResponse(response: Response, allowed: Array<number>): Promis
 	if (allowed.indexOf(response.status) < 0) {
 		const message = await response.text()
 		const err: SofieCoreAgentError = new Error(
-			`Unexpected response HTTP ${response.status} ${message}, wanted one of ${allowed.join(',')}!`
+			`Unexpected response HTTP ${response.status} ${message}, wanted one of ${allowed.join(',')}!`,
 		)
 		err.responseStatus = response.status
 

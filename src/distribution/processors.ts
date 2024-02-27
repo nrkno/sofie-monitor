@@ -81,7 +81,7 @@ processors[Command.DELETE] = {
 			const message = await messageStore.read(messageId)
 			if (!message) {
 				logger.debug(
-					`Aborted recall of message ${messageId} from ${targetInstanceId}, message is not in datastore`
+					`Aborted recall of message ${messageId} from ${targetInstanceId}, message is not in datastore`,
 				)
 				return
 			}

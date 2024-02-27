@@ -89,7 +89,7 @@ async function update(message: ServiceMessage): Promise<ServiceMessage> {
 				} catch (e: any) {
 					reject(`Unknown data error in stored document: ${e.message}`)
 				}
-			}
+			},
 		)
 	})
 }
