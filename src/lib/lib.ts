@@ -44,7 +44,7 @@ export async function getExternalVersions(serverHost: string): Promise<PromiseSe
 						error: new Error(`Unable to fetch resource ${url}: ${error}`),
 					}
 				}
-			})
+			}),
 		)
 	}
 
@@ -69,7 +69,7 @@ export async function getServerData(serverHosts: Array<string>): Promise<Array<a
 			serverHealth._extVersions = await getExternalVersions(host)
 			serverHealth._host = host
 			return serverHealth
-		})
+		}),
 	)
 }
 

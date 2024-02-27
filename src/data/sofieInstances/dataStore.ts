@@ -109,7 +109,7 @@ async function update(instance: SofieInstance): Promise<SofieInstance> {
 				} catch (e: any) {
 					reject(`Unknown data error in stored document: ${e.message}`)
 				}
-			}
+			},
 		)
 	})
 }

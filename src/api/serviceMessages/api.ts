@@ -32,7 +32,7 @@ function registerServiceMessageApiHandlers(app: Application, rootPath: string): 
 	endpoints.read = { path, method: 'GET', useId: true }
 
 	app.post(`${path}/refreshPublishStates/:id`, (req, res) =>
-		callAsyncAsCallback(refreshPublishStatesHandler, undefined, req, res)
+		callAsyncAsCallback(refreshPublishStatesHandler, undefined, req, res),
 	)
 
 	endpoints.refreshPublishStates = {
