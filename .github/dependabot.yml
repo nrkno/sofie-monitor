@@ -1,20 +1,24 @@
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     reviewers:
-      - "@nrkno/sofie-ops"
-  - package-ecosystem: "npm"
-    directory: "/"
+      - '@nrkno/sofie-ops'
+
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     reviewers:
-      - "@nrkno/sofie-ops"
-  - package-ecosystem: "docker"
-    directory: "/"
+      - '@nrkno/sofie-ops'
+    # Disable version updates for npm dependencies
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: 'docker'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     reviewers:
-      - "@nrkno/sofie-ops"
+      - '@nrkno/sofie-ops'
