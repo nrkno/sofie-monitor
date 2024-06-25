@@ -15,6 +15,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Use Node.js 18.x
         uses: actions/setup-node@v4
@@ -33,6 +35,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Use Node.js 18.x
         uses: actions/setup-node@v4
@@ -56,6 +60,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Use Node.js 18.x
         uses: actions/setup-node@v4
         with:
@@ -95,6 +101,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Determine if images should be published to DockerHub
         id: dockerhub
