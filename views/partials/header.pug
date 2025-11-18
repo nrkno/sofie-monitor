@@ -23,7 +23,7 @@
           ul.dropdown-menu
             each server in servers
               li
-                a(href='http://' + server.host, target='_blank') #{server.name || server.host} #{server.name ? '(' + server.host + ')' : ''}
+                a(href=server.host, target='_blank') #{server.name || server.host} #{server.name ? '(' + server.host + ')' : ''}
         //- Uncomment the below to see a link to github
         //- li
         //-   a(style="padding-top: 0; padding-bottom: 0;")
