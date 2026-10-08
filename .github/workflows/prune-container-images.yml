@@ -3,11 +3,15 @@ name: "Prune container images"
 on:
   workflow_dispatch:
   schedule:
-    - cron: '47 12 * * *'
+    - cron: "47 12 * * *"
+
+permissions:
+  packages: read
+  contents: read
 
 jobs:
   prune-container-images:
-    uses: nrkno/sofie-github-workflows/.github/workflows/prune-container-images.yml@main
+    uses: nrkno/sofie-github-workflows/.github/workflows/prune-container-images.yml@699d000be9230ca2587a1436e7203d6d0d071089 # main
     with:
       dry-run: false
       prune-untagged: true
