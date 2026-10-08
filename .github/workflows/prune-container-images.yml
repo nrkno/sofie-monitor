@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   prune-container-images:
-    uses: nrkno/sofie-github-workflows/.github/workflows/prune-container-images.yml@699d000be9230ca2587a1436e7203d6d0d071089 # main
+    uses: nrkno/sofie-github-workflows/.github/workflows/prune-container-images.yml@699d000be9230ca2587a1436e7203d6d0d071089
     with:
       dry-run: false
       prune-untagged: true
