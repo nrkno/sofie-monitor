@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   prune-container-images:
-    uses: nrkno/sofie-github-workflows/.github/workflows/prune-container-images.yml@change-prune-action
+    uses: sofie-automation/sofie-github-workflows/.github/workflows/prune-container-images.yml@change-prune-action
     with:
       dry-run: true
       prune-untagged: true
