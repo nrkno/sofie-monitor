@@ -6,15 +6,11 @@ on:
     - cron: "47 12 * * *"
 
 permissions:
-  packages: read
-  contents: read
+  packages: write
 
 jobs:
   prune-container-images:
-    uses: nrkno/sofie-nrk-github-workflows/.github/workflows/prune-container-images.yml@745e7d92d46ab3873739c51e6ac5ab158c941851 # main
+    uses: nrkno/sofie-github-workflows/.github/workflows/prune-container-images.yml@947bb6c768b27a68068806ed385a1b5bcb945481 # change-prune-action
     with:
-      dry-run: false
+      dry-run: true
       prune-untagged: true
-      package-name: sofie-monitor
-    secrets:
-      prune-token: ${{ secrets.GHCR_PRUNE_TOKEN }}
