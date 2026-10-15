@@ -12,5 +12,5 @@ jobs:
   prune-container-images:
     uses: sofie-automation/sofie-github-workflows/.github/workflows/prune-container-images.yml@change-prune-action
     with:
-      dry-run: true
+      dry-run: false
       prune-untagged: true
